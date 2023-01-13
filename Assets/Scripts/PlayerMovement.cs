@@ -10,9 +10,13 @@ public class PlayerMovement : MonoBehaviour
     public bool gameOver;
     public ParticleSystem explosionParticle;
     public ParticleSystem dirtParticle;
+    public AudioClip jumpSound;
+    public AudioClip crashSound;
 
     private Rigidbody playerRb;
     private Animator playerAnim;
+    private AudioSource playerAudio;
+
 
     void OnCollisionEnter(Collision collision)
     {
@@ -29,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
             playerAnim.SetInteger("DeathType_int", 1);
             explosionParticle.Play();
             dirtParticle.Stop();
+            playerAudio.PlayOneShot(crashSound, 1.0f);
         }
     }
 
@@ -40,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
             playerAnim.SetTrigger("Jump_trig");
             isOnGround = false;
             dirtParticle.Stop();
+            playerAudio.PlayOneShot(jumpSound, 1.0f);
         }
     }
 
@@ -49,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
+        playerAudio = GetComponent<AudioSource>();
         Physics.gravity *= gravityModifier;
     }
 
